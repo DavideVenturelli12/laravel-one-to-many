@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 use App\Post;
+use App\Category;
 
 class PostController extends Controller
 {
@@ -30,7 +31,9 @@ class PostController extends Controller
     public function create()
     {
         //
-        return view('admin.posts.create');
+        $categories = Category::all();
+
+        return view('admin.posts.create', compact('categories'));
     }
 
     /**
@@ -44,13 +47,13 @@ class PostController extends Controller
         //
         $request->validate([
             'title' => 'required|max:250',
-            'content' => 'required|min:5|max:100'
+            'content' => 'required|min:5|max:250',
         ], [
             'title.required' => 'Il titolo deve essere valorizzato',
             'content.required' => 'Il contenuto deve essere valorizzato',
             'title.max' => 'Hai superato i :attribute caratteri',
-            'content.min' => 'Minimo 5 caratteri'
-
+            'content.min' => 'Minimo 5 caratteri',
+            'content.max' => 'Hai superato i :attribute caratteri',
         ]);
 
         $postData = $request->all();
@@ -71,12 +74,14 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        //
         $post= Post::find($id);
         if (!$id) {
         abort(404);
         }
-        return view('admin.posts.show', compact('post'));
+
+        $category = Category::find($post->category_id);
+
+        return view('admin.posts.show', compact('post'), ['category'=> $category] ); //
     }
 
     /**
@@ -88,11 +93,13 @@ class PostController extends Controller
     public function edit($id)
     {
         //
+        $categories = Category::all();
+
         $post= Post::find($id);
         if (!$id) {
         abort(404);
         }
-        return view('admin.posts.edit', compact('post'));
+        return view('admin.posts.edit', compact('post', 'categories'));
     }
 
     /**
@@ -105,10 +112,17 @@ class PostController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $request->validate([
+       $request->validate([
             'title' => 'required|max:250',
-            'content' => 'required',
+            'content' => 'required|min:5|max:250',
+        ], [
+            'title.required' => 'Il titolo deve essere valorizzato',
+            'content.required' => 'Il contenuto deve essere valorizzato',
+            'title.max' => 'Hai superato i :attribute caratteri',
+            'content.min' => 'Minimo 5 caratteri',
+            'content.max' => 'Hai superato i :attribute caratteri',
         ]);
+
         $post = Post::find($id);
         $postData = $request->all();
 

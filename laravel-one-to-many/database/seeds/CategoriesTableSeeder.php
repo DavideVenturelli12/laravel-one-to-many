@@ -15,7 +15,7 @@ class CategoriesTableSeeder extends Seeder
     public function run()
     {
         //
-        $categories = ['spa', 'Trattamenti', 'Cibo', 'Wellness'];
+        $categories = ['Spa', 'Trattamenti', 'Cibo', 'Wellness', 'Vegan', 'Fitness'];
 
         foreach($categories as $category){
             $new_category_object = new Category();

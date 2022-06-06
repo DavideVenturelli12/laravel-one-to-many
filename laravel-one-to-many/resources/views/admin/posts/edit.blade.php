@@ -3,17 +3,16 @@
     <div class="container">
         <div class="row">
             <div class="col-md-8">
-                {{-- Title card --}}
+                {{-- titolo card --}}
                 <div class="card">
                     <div class="card-header">Modifica post</div>
 
                     <div class="card-body">
                         <form action="{{ route('admin.posts.update', $post->id) }}" method="POST">
-                            {{-- Token --}}
-                            @csrf
-                            {{-- / Token --}}
 
-                            {{-- title post --}}
+                            @csrf
+
+                            {{-- / titolo post --}}
                             @method('PUT')
                             <div class="form-group">
                                 <label for="title">Titolo:</label>
@@ -25,6 +24,30 @@
                                     </div>
                                 @enderror
                             </div>
+
+                            {{-- Categoria --}}
+                            <div class="form-group">
+                                <label>Categoria:</label>
+                                <select name="category_id">
+                                    <option value="">-- Scegli Categoria --</option>
+                                    @foreach ($categories as $category)
+                                        <option value="{{ $category->id }}"
+                                            {{ $category->id == old('$category_id', $post->category_id) ? 'selected' : '' }}
+                                            selected>
+                                            {{ $category->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+
+                                @error('category_id')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                            {{-- / Categoria --}}
+
+                            {{-- contenuto post --}}
                             <div class="form-group">
                                 <label for="content">Contenuto:</label>
                                 <textarea type="text" name="content" class="form-control @error('content') is-invalid @enderror"
@@ -37,7 +60,7 @@
                                     </div>
                                 @enderror
                             </div>
-                            {{-- / content post --}}
+                            {{-- / contenuto post --}}
 
                             <div class="form-group">
                                 <input type="submit" class="btn btn-success white" value="Modifica Post">

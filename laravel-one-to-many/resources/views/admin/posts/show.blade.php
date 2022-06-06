@@ -16,10 +16,17 @@
             </button>
         </form>
     </div>
-    <div class="mt-3">
-        <h3>{{ $post->title }}</h3>
-        <p>{{ $post->content }}</p>
-    </div>
+    <dl class="mt-3">
+        <dt>Titolo:</dt>
+        <dd>{{ $post->title }}</dd>
+        <dt>Slug:</dt>
+        <dd>{{ $post->slug }}</dd>
+        <dt>Categoria:</dt>
+        <dd>{{ $category->name }}</dd>
+        <dt>Contenuto:</dt>
+        <dd>{{ $post->content }}</dd>
+
+    </dl>
     {{-- link per tornare indietro --}}
     <a href="{{ route('admin.posts.index') }}" class="btn btn-primary"> Indietro</a>
     {{-- / link per tornare indietro --}}

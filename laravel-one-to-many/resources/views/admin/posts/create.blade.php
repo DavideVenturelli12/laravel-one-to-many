@@ -11,15 +11,14 @@
                     {{-- / Titolo card --}}
                     <div class="card-body">
                         <form action="{{ route('admin.posts.store') }}" method="POST">
-                            {{-- Token --}}
+
                             @csrf
-                            {{-- / Token --}}
 
                             {{-- titolo post --}}
                             <div class="form-group">
                                 <label for="title">Titolo:</label>
                                 <input type="text" name="title" class="form-control @error('title') is-invalid @enderror "
-                                    placeholder="Titolo post">
+                                    placeholder="Titolo post" value="{{ old('title') }}">
                                 @error('title')
                                     <div class="invalid-feedback">
                                         {{ $message }}
@@ -27,6 +26,27 @@
                                 @enderror
                             </div>
                             {{-- / titolo post --}}
+
+                            {{-- Categoria --}}
+                            <div class="form-group">
+                                <label>Categoria:</label>
+                                <select name="category_id">
+                                    <option value="">-- Scegli Categoria --</option>
+                                    @foreach ($categories as $category)
+                                        <option value="{{ $category->id }}"
+                                            {{ $category->id == old('$category_id') ? 'selected' : '' }} selected>
+                                            {{ $category->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+
+                                @error('category_id')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                            {{-- / Categoria --}}
 
                             {{-- contenuto post --}}
                             <div class="form-group">
